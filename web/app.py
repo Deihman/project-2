@@ -32,19 +32,19 @@ def home():
 
 @app.errorhandler(404)
 def page_not_found(a):
-    return render_template("./pages/404.html"), 404
+    return send_from_directory("./pages/", "404.html"), 404
 
 @app.errorhandler(403)
 def filename_forbidden(a):
-    return render_template("./pages/403.html"), 403
+    return send_from_directory("./pages/", "403.html"), 403
 
 @app.route("/<path:filename>")
 def printhtml(filename):
     if '..' in filename or '~' in filename:
-        raise NotFound()
+        raise Forbidden()
 
     if not(os.path.exists(f'./pages/{filename}')):
-        raise Forbidden()
+        raise NotFound()
 
     return send_from_directory("./pages/", filename)
 
